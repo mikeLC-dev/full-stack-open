@@ -35,20 +35,32 @@ const App = () => {
       <Display option="good" value={good} />
       <Display option="neutral" value={neutral} />
       <Display option="bad" value={bad} />
-      <Stadistics all={bad+good+neutral} average={(bad*-1+good*1+neutral*0)/(bad+good+neutral)} positive={good/(bad+good+neutral)}/>
+      <Stadistics good={good} bad={bad} neutral={neutral}/>
 
     </div>
   )
 }
 
-const Stadistics = (props)=>(
-  <div>
-    <p>all {props.all}</p>
-    <p>average {props.average}</p>
-    <p>positive {props.positive}</p>
-  </div>
+const Stadistics = (props)=>{
+  
+  if(props.good !=0 && props.bad !=0 && props.neutral !=0){
+    return(
+      <div>
+        <p>all {props.bad+props.good+props.neutral}</p>
+        <p>average {(props.bad*-1+props.good*1+props.neutral*0)/(props.bad+props.good+props.neutral)}</p>
+        <p>positive {props.good/(props.bad+props.good+props.neutral)}</p>
+      </div>    
+    )
+  } else {
+    return(
+    <div>
+      <p>No feedback given</p>
+    </div>
+    )
+  }
+  
+}
 
-)
 
 const Display = (props) =>(
 
