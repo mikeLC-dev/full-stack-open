@@ -29,6 +29,20 @@ const App = () => {
     setVotes(newVotes)
     console.log(votes)
   }
+
+  const mostAnecdoteVotes = (arrayOfVotes)=>{
+      //arrayOfVotes.reduce((previous, current) => current[1] > previous[1] ? current : previous)
+      let mayor = 0;
+      let mayorIndex = 0
+      for(let i=0; i<arrayOfVotes.length; i++){
+        if(arrayOfVotes[i]>mayor){
+          mayor = arrayOfVotes[i];
+          mayorIndex = i;
+        }
+      }
+      return mayorIndex
+  }
+  
   
   
   
@@ -37,6 +51,8 @@ const App = () => {
       <p>{anecdotes[selected]}</p>
       <button onClick={nextAnecdote}>next anecdote</button>
       <button onClick={voteForAnecdote}>vote</button>
+      <p>Anecdote with most votes</p>
+      <p>{anecdotes[mostAnecdoteVotes(votes)]} has {votes[mostAnecdoteVotes(votes)]} votes</p>
     </div>
     
   )
