@@ -41,12 +41,12 @@ const App = () => {
 const StadisticLine = (props) => {
   if (props.text === "positive") {
     return (
-      <p>{props.text} {props.value} %</p>
+      <tr><td>{props.text} {props.value} % </td></tr>
     )
   }
 
   return (
-    <p>{props.text} {props.value}</p>
+    <tr><td>{props.text} {props.value}</td></tr>
   )
 }
 
@@ -68,12 +68,16 @@ const Stadistics = (props)=>{
   else{
     return (
       <div>
+        <table>
+          <tbody>
         <StadisticLine text="good" value={props.good}/>
         <StadisticLine text="neutral" value={props.neutral}/>
         <StadisticLine text="bad" value={props.bad}/>
         <StadisticLine text="total" value={total}/>
         <StadisticLine text="average" value={average}/>
         <StadisticLine text="positive" value={positive}/>
+        </tbody>
+        </table>
       </div>
 
     )
