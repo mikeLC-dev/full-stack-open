@@ -1,10 +1,7 @@
 
 const Total = ({total}) => {
-  let suma =0
+    const suma = total.reduce((s,p)=>s+p.exercises,0)
     
-  total.map((part) => {
-    suma+=part.exercises
-    })
     return (
     <div>
       <p>Number of exercises {suma}</p>
