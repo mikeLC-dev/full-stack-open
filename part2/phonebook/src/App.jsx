@@ -3,31 +3,48 @@ import Person from "./components/Person"
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas',
+      number: 600000000
+     }
   ]) 
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
-      name: newName,    
+      name: newName, 
+      number: newNumber   
     }
      
-    const nombres = persons.map((person)=>person.name)
-    const isAlreadyUsed = nombres.includes(newName)
-    if(isAlreadyUsed){
-      alert(`${newName} is already added to phonebook`)
+    const names = persons.map((person)=>person.name)
+    const isNameAlreadyUsed = names.includes(newName)
+    const numbers = persons.map((person)=>parseInt(person.number))
+    const isNumberAlreadyUsed = numbers.includes(parseInt(newNumber))
+
+    console.log(numbers)
+    console.log("está?", isNumberAlreadyUsed)
+    if(isNameAlreadyUsed){
+      alert(`The name ${newName} is already added to phonebook`)
+    } else if(isNumberAlreadyUsed){
+      alert(`The number ${newNumber} is already added to phonebook`)  
     } else{
-      setPersons(persons.concat(personObject))
-      setNewName('')
+        setPersons(persons.concat(personObject))
+        setNewName('')
+        setNewNumber('')
     }
     
     
   }
 
-  const handlePersonChange = (event) => {
+  const handleNameChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
+  }
+
+  const handleNumberChange = (event) =>{
+    console.log(event.target.value)
+    setNewNumber(event.target.value)
   }
 
   return (
@@ -35,7 +52,10 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={addPerson}>
         <div>
-          name: <input value={newName} onChange={handlePersonChange}/>
+          name: <input value={newName} onChange={handleNameChange}/>
+        </div>
+        <div>
+          number: <input value={newNumber} onChange={handleNumberChange}/>        
         </div>
         <div>
           <button type="submit">add</button>
