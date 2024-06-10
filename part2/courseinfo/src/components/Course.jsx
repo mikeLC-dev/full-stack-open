@@ -6,10 +6,7 @@ import Total from "./Total"
 
 
 const Course = ({courses}) =>{
-    //console.log(courses) 
-    
-    
-        
+
         return(
         <div>
           {courses.map((course) => 
@@ -21,10 +18,7 @@ const Course = ({courses}) =>{
          )} 
          
         </div>)
-
-    
+  
 }
-
-
 
 export default Course 
