@@ -15,14 +15,6 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
 
   useEffect(() => {
-    /*
-      axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      }).catch(error => {
-        console.log('error al agregar al servidor')
-      })*/
     personsService.
       getAll().
       then(initialPersons =>{
@@ -53,19 +45,6 @@ const App = () => {
       alert(`The number ${newNumber} is already added to phonebook`)  
     } else{
 
-      /*
-              axios
-        .post('http://localhost:3001/persons', personObject)
-        .then(response => {
-          console.log(response)
-          setPersons(persons.concat(response.data))
-          setNewName('')
-          setNewNumber('')
-        }).catch(error => {
-          console.log('error al agregar al servidor')
-        })
-
-        */
       personsService
         .create(personObject)
         .then(returnedPerson =>{
@@ -79,6 +58,22 @@ const App = () => {
     
     
   }
+
+  const deletePerson = (id) =>{
+    
+    const personObject = persons.find((person)=>person.id === id)
+    if (window.confirm(`Delete ${personObject.name} ?`)) {
+      personsService.deletePerson(personObject.id)
+        .then(returnedPerson =>{
+          setPersons(persons.filter((person)=>person.id != personObject.id))
+          //setPersons(persons.map(person => person.id !== personObject.id ? person : returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        }).catch(error => {
+          console.log('error al agregar al servidor')})
+    }
+  }
+  
 
   const handleNameChange = (event) => {
     console.log(event.target.value)
@@ -95,7 +90,12 @@ const App = () => {
     setNewFilter(event.target.value)
     setShowAll(false)
   }
-
+  /*
+  const handleDeletePerson = (event)=>{
+    console.log(event.target.value)
+    setPersons(event.target.value)
+  }
+  */
 
 
   return (
@@ -105,7 +105,7 @@ const App = () => {
       <h2>add a new</h2>
         <PersonForm addPerson={addPerson} name={newName} onChangeName={handleNameChange} number={newNumber} onChangeNumber={handleNumberChange}/>   
       <h2>Numbers</h2>
-        <Persons persons={persons} show={showAll} filter={newFilter}/>
+        <Persons persons={persons} show={showAll} filter={newFilter} deletePerson={deletePerson}/>
     </div>
   )
 }
