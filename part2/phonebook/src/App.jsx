@@ -39,11 +39,23 @@ const App = () => {
     const isNumberAlreadyUsed = numbers.includes(parseInt(newNumber))
 
     
-    if(isNameAlreadyUsed){
-      alert(`The name ${newName} is already added to phonebook`)
-    } else if(isNumberAlreadyUsed){
+    if(isNameAlreadyUsed || isNumberAlreadyUsed){
+      if(window.confirm(`The name ${newName} is already added to phonebook, do you want to Update?`)){
+        const updatePerson = persons.filter(person=>(person.name === personObject.name) || (person.number === personObject.number))
+        personsService
+          .update(updatePerson[0].id,personObject)
+          .then(returnedPerson => {
+            
+            setPersons(persons.map(person => person.id !== updatePerson[0].id ? person : returnedPerson))
+            setNewName('')
+            setNewNumber('')
+          }).catch(error => {
+            console.log('error al actualizar los datos de la persona')
+          })
+      }
+    } /*else if(isNumberAlreadyUsed){
       alert(`The number ${newNumber} is already added to phonebook`)  
-    } else{
+    } */else{
 
       personsService
         .create(personObject)
