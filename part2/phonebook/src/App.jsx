@@ -43,9 +43,21 @@ const App = () => {
     } else if(isNumberAlreadyUsed){
       alert(`The number ${newNumber} is already added to phonebook`)  
     } else{
+      /*
         setPersons(persons.concat(personObject))
         setNewName('')
         setNewNumber('')
+        */
+        axios
+        .post('http://localhost:3001/persons', personObject)
+        .then(response => {
+          console.log(response)
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewNumber('')
+        }).catch(error => {
+          console.log('error al agregar al servidor')
+        })
     }
     
     
