@@ -4,6 +4,7 @@ import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import axios from 'axios'
+import personsService from './services/persons'
 
 
 const App = () => {
@@ -14,15 +15,23 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
 
   useEffect(() => {
-    console.log('effect')
-    axios
+    /*
+      axios
       .get('http://localhost:3001/persons')
       .then(response => {
-        console.log('promise fulfilled')
         setPersons(response.data)
+      }).catch(error => {
+        console.log('error al agregar al servidor')
+      })*/
+    personsService.
+      getAll().
+      then(initialPersons =>{
+        setPersons(initialPersons)
+      }).catch(error => {
+        console.log('error al agregar al servidor')
       })
   }, [])
-  console.log('render', persons.length, 'persons')
+  
 
 
   const addPerson = (event) => {
@@ -43,16 +52,24 @@ const App = () => {
     } else if(isNumberAlreadyUsed){
       alert(`The number ${newNumber} is already added to phonebook`)  
     } else{
+
       /*
-        setPersons(persons.concat(personObject))
-        setNewName('')
-        setNewNumber('')
-        */
-        axios
+              axios
         .post('http://localhost:3001/persons', personObject)
         .then(response => {
           console.log(response)
           setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewNumber('')
+        }).catch(error => {
+          console.log('error al agregar al servidor')
+        })
+
+        */
+      personsService
+        .create(personObject)
+        .then(returnedPerson =>{
+          setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
         }).catch(error => {
