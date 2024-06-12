@@ -24,6 +24,8 @@ const App = () => {
       })
   }, [])
 
+  
+
   const handleFilterChange = (event)=>{
     console.log(event.target.value)
     setNewFilter(event.target.value)
@@ -33,7 +35,7 @@ const App = () => {
   return (
     <div>
       <Filter filter={newFilter} onChangeFilter={handleFilterChange}/>
-      <Countries countries={countries} filter={newFilter}/>
+      <Countries countries={countries} filter={newFilter} setCountries={setCountries} />
     </div>
   )
 }

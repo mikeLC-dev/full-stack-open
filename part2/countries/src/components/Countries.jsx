@@ -2,7 +2,7 @@ import React from 'react'
 import Country from './Country'
 import CountryData from './CountryData'
 
-const Countries = ({countries,filter}) =>{
+const Countries = ({countries,filter,setCountries}) =>{
 
     
     const countriesFiltered = countries.filter(country =>country.name.official.includes(filter))
@@ -22,7 +22,7 @@ const Countries = ({countries,filter}) =>{
             <div>
                 {countries.map((country, i) => {
                 if(country.name.official.includes(filter)){
-                    return <Country key={i} country={country} />
+                    return <Country key={i} country={country} setCountries={setCountries}/>
                 }    
               })}
             </div>)
