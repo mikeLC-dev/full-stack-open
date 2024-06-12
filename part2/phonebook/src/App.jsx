@@ -3,8 +3,10 @@ import Person from "./components/Person"
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
+import Notification from './components/Notification'
 import axios from 'axios'
 import personsService from './services/persons'
+import './index.css'
 
 
 const App = () => {
@@ -13,6 +15,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [newNotification, setNotification] = useState(null)
 
   useEffect(() => {
     personsService.
@@ -45,17 +48,24 @@ const App = () => {
         personsService
           .update(updatePerson[0].id,personObject)
           .then(returnedPerson => {
-            
             setPersons(persons.map(person => person.id !== updatePerson[0].id ? person : returnedPerson))
             setNewName('')
             setNewNumber('')
+            setNotification(`Updated ${returnedPerson.name}`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
+            
+            
           }).catch(error => {
             console.log('error al actualizar los datos de la persona')
+            setNotification(`ERROR: ${newName} has already been removed from server`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
           })
       }
-    } /*else if(isNumberAlreadyUsed){
-      alert(`The number ${newNumber} is already added to phonebook`)  
-    } */else{
+    } else{
 
       personsService
         .create(personObject)
@@ -63,6 +73,10 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          setNotification(`Added ${returnedPerson.name}`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
         }).catch(error => {
           console.log('error al agregar al servidor')
         })
@@ -78,10 +92,13 @@ const App = () => {
       personsService.deletePerson(personObject.id)
         .then(returnedPerson =>{
           setPersons(persons.filter((person)=>person.id != personObject.id))
-          //setPersons(persons.map(person => person.id !== personObject.id ? person : returnedPerson))
           setNewName('')
           setNewNumber('')
         }).catch(error => {
+          setNotification(`ERROR: That person has already been removed from server`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
           console.log('error al agregar al servidor')})
     }
   }
@@ -102,17 +119,11 @@ const App = () => {
     setNewFilter(event.target.value)
     setShowAll(false)
   }
-  /*
-  const handleDeletePerson = (event)=>{
-    console.log(event.target.value)
-    setPersons(event.target.value)
-  }
-  */
-
-
+  
   return (
     <div>
       <h2>Phonebook</h2>
+        <Notification message={newNotification}/>
         <Filter filter={newFilter} onChangeFilter={handleFilterChange}/>
       <h2>add a new</h2>
         <PersonForm addPerson={addPerson} name={newName} onChangeName={handleNameChange} number={newNumber} onChangeNumber={handleNumberChange}/>   
