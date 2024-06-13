@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 
-const persons = [
+let persons = [
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -24,12 +24,48 @@ const persons = [
     }
 ]
 
+app.use(express.json())
+
 app.get('/', (request, response) => {
     response.send('<h1>Hello World!</h1>')
   })
   
   app.get('/api/persons', (request, response) => {
+    
     response.json(persons)
+  })
+
+  app.post('/api/persons', (request, response) => {
+    
+    
+    const newId = Math.floor(Math.random()*10000)
+    const body = request.body
+    const nameAlreadyExists = persons.find((person)=>person.name === body.name) 
+    
+    
+    if (!body.name) {
+        return response.status(400).json({ 
+          error: 'No se puede dejar vacío el campo nombre' 
+        })
+    } else if (!body.number){
+        return response.status(400).json({ 
+            error: 'No se puede dejar vacío el campo numero' 
+          })
+    } else if(nameAlreadyExists){
+        return response.status(400).json({ 
+            error: 'El nombre ya existe en la agenda' 
+          })
+    }
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: newId
+    }
+    
+    persons = persons.concat(person)
+    response.json(person)
+    
+    
   })
 
   app.get('/api/persons/:id', (request, response) => {
@@ -40,6 +76,14 @@ app.get('/', (request, response) => {
     } else{
         response.json(person)
     }
+    
+  })
+
+  app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    persons = persons.filter(person => person.id !== id)
+
+    response.status(204).end()
     
   })
 
