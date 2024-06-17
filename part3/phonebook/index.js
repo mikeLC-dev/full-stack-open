@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
 
 let persons = [
     { 
@@ -25,6 +26,17 @@ let persons = [
 ]
 
 app.use(express.json())
+app.use(morgan('tiny'))
+app.use(morgan((tokens, req, res) => {
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, 'content-length'), '-',
+      tokens['response-time'](req, res), 'ms',
+      JSON.stringify(req.body)
+    ].join(' ')
+  }))
 
 app.get('/', (request, response) => {
     response.send('<h1>Hello World!</h1>')
@@ -42,14 +54,16 @@ app.get('/', (request, response) => {
     const body = request.body
     const nameAlreadyExists = persons.find((person)=>person.name === body.name) 
     
+    console.log("nombre:",body.name)
+    console.log("nmero:",body.number)
     
     if (!body.name) {
         return response.status(400).json({ 
           error: 'No se puede dejar vacío el campo nombre' 
         })
-    } else if (!body.number){
+    } else if (!body.number || body.number <=0){
         return response.status(400).json({ 
-            error: 'No se puede dejar vacío el campo numero' 
+            error: 'No se puede dejar vacío el campo número' 
           })
     } else if(nameAlreadyExists){
         return response.status(400).json({ 
