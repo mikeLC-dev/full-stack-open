@@ -31,7 +31,7 @@ const personSchema = new mongoose.Schema({
         number: process.argv[4]
       })
       
-      newPerson.save().then(result => {
+      newPerson.save().then(() => {
         console.log(`added ${process.argv[3]} number ${process.argv[4]} to phonebook`)
         mongoose.connection.close()
       })
