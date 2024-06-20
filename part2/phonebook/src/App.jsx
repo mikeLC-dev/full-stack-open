@@ -23,7 +23,7 @@ const App = () => {
       then(initialPersons =>{
         setPersons(initialPersons)
       }).catch(error => {
-        console.log('error al agregar al servidor')
+        console.log('error al traer los datos de las personas del servidor')
       })
   }, [])
   
@@ -43,7 +43,7 @@ const App = () => {
 
     
     if(isNameAlreadyUsed || isNumberAlreadyUsed){
-      if(window.confirm(`The name ${newName} is already added to phonebook, do you want to Update?`)){
+      if(window.confirm(`The name ${newName} or the number ${newNumber} is already added to phonebook, do you want to Update?`)){
         const updatePerson = persons.filter(person=>(person.name === personObject.name) || (person.number === personObject.number))
         personsService
           .update(updatePerson[0].id,personObject)
@@ -78,7 +78,12 @@ const App = () => {
               setNotification(null)
             }, 5000)
         }).catch(error => {
-          console.log('error al agregar al servidor')
+          
+          setNotification(`VALIDATION ERROR: Check your input data: ${error.response.data.error}`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
+          console.log("ERROR:",error.response.data.error)
         })
     }
     
@@ -99,7 +104,7 @@ const App = () => {
             setTimeout(() => {
               setNotification(null)
             }, 5000)
-          console.log('error al agregar al servidor')})
+          console.log('error al eliminar del servidor')})
     }
   }
   

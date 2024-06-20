@@ -57,7 +57,7 @@ app.get('/', (request, response) => {
     })
   })
 
-  app.post('/api/persons', (request, response) => {
+  app.post('/api/persons', (request, response,next) => {
     
 
     const body = request.body
@@ -73,7 +73,7 @@ app.get('/', (request, response) => {
     
     person.save().then(savedPerson => {
       response.json(savedPerson)
-    })
+    }).catch(error => next(error))
 
     
   })
@@ -88,7 +88,7 @@ app.get('/', (request, response) => {
       number: body.number,
     }
 
-    Person.findByIdAndUpdate(request.params.id, person, { new: true })
+    Person.findByIdAndUpdate(request.params.id, person, { new: true, runValidators: true, context: 'query' })
       .then(updatedPerson => {
         response.json(updatedPerson.toJSON())
       })
