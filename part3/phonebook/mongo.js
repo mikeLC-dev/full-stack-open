@@ -22,7 +22,7 @@ const personSchema = new mongoose.Schema({
   })
   
   const Person = mongoose.model('Person', personSchema)
-  const newId = Math.floor(Math.random()*10000)
+  
   if(process.argv[3] && process.argv[4]){
 
     const newPerson = new Person({
