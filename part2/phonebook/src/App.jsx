@@ -38,12 +38,10 @@ const App = () => {
      
     const names = persons.map((person)=>person.name)
     const isNameAlreadyUsed = names.includes(newName)
-    const numbers = persons.map((person)=>parseInt(person.number))
-    const isNumberAlreadyUsed = numbers.includes(parseInt(newNumber))
-
     
-    if(isNameAlreadyUsed || isNumberAlreadyUsed){
-      if(window.confirm(`The name ${newName} or the number ${newNumber} is already added to phonebook, do you want to Update?`)){
+    
+    if(isNameAlreadyUsed){
+      if(window.confirm(`The name ${newName} is already added to phonebook, do you want to Update?`)){
         const updatePerson = persons.filter(person=>(person.name === personObject.name) || (person.number === personObject.number))
         personsService
           .update(updatePerson[0].id,personObject)
