@@ -39,6 +39,8 @@ const App = () => {
     const names = persons.map((person)=>person.name)
     const isNameAlreadyUsed = names.includes(newName)
     
+    console.log("Nombre1:",newName)
+    console.log("nombres:",names)
     
     if(isNameAlreadyUsed){
       if(window.confirm(`The name ${newName} is already added to phonebook, do you want to Update?`)){
