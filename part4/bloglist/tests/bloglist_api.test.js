@@ -4,6 +4,8 @@ const supertest = require('supertest')
 const app = require('../app')
 const assert = require('node:assert')
 const api = supertest(app)
+const model = require('../models/blog')
+
 
 
 
@@ -14,7 +16,7 @@ test.only('blogs are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-test.only('there are one blogs', async () => {
+test('there are one blogs', async () => {
     const response = await api.get('/api/blogs')
   
     assert.strictEqual(response.body.length, 1)
@@ -23,7 +25,6 @@ test.only('there are one blogs', async () => {
 test.only('new blog is created appropriately', async () => {
 
     const blogPrueba = {
-        id:"654n6s5d4fh6a5sdf4j65dswaf4h",
         title:"Blog de Prueba 1",
         author:"Mike",
         url:"https://pruebadeblog.com/",
@@ -35,7 +36,41 @@ test.only('new blog is created appropriately', async () => {
       .send(blogPrueba)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-  })
+})
+
+test.only('if like property is missing, it must be 0', async() =>{
+    const blogPrueba = {
+        title:"Blog de Prueba 3",
+        author:"Mike",
+        url:"https://pruebadeblog.com/",
+    }
+
+    const Blog = mongoose.model('Blog', model.blogSchema)
+    
+    await api
+      .post('/api/blogs')
+      .send(blogPrueba)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+       
+      const blogEncontrado = await Blog.findOne({ title: 'Blog de Prueba 3' }).exec()
+      
+      assert.equal(blogEncontrado.likes,0)
+      
+})
+
+test.only('if title or url properties are missing, it must return status 400', async() =>{
+    const blogPrueba = {
+        author:"Mike",
+        likes: 5000
+    }
+
+    await api
+    .post('/api/blogs')
+    .send(blogPrueba)
+    .expect(400)
+
+})
 
 after(async () => {
   await mongoose.connection.close()
