@@ -36,13 +36,38 @@ blogsRouter.post('/', async (request, response,next) => {
 
   blogsRouter.delete('/:id', async (request, response,next) => {
     const id = request.params.id.toString()
-    //const blogToDelete = await Blog.findById(request.params.id)
+    
     try{
       await Blog.findByIdAndDelete(id)
       response.status(204).end()
     } catch (exception){
       next(exception)
     }
+
+  })
+
+  blogsRouter.put('/:id', async (request, response,next) => {
+    const id = request.params.id.toString()
+    const body = request.body
+    const blogToUpdate = await Blog.findById(id)
+      const newBlog = {
+        title: body.title,
+        author: body.author,
+        url: body.url,
+        likes: body.likes
+      }
+
+
+    try{
+      const updatedBlog = await Blog.findByIdAndUpdate(id, newBlog, { new: true })
+      logger.info(`blog ${newBlog.title} successfully updated`)
+      response.json(updatedBlog.toJSON())
+      
+    } catch(exception){
+      next(exception)
+    }
+
+
 
   })
 

@@ -99,6 +99,48 @@ describe('deletion of a blog', () => {
     })
   })
 
+
+  describe('updating of a blog', () => {
+    test('update a blog successfull', async () => {
+        const newBlog = {
+            title:"Updating Blog",
+            author:"Mike",
+            url:"http://www.updatingblog.html",
+            likes:12
+          }
+      
+          await api
+           .post('/api/blogs')
+           .send(newBlog)
+           .expect(201)
+           .expect('Content-Type', /application\/json/)
+          
+          const allBlogs = await Blog.find()
+          const blogToUpdate = allBlogs.find(blog => blog.title === newBlog.title)
+      
+          const updatedBlog = {
+            ...blogToUpdate,
+            likes: blogToUpdate.likes + 1
+          }
+      
+          await api
+            .put(`/api/blogs/${blogToUpdate.id}`)
+            .send(updatedBlog)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+      
+          const blogsAtEnd = await Blog.find()
+          assert(blogsAtEnd.length === allBlogs.length)
+          const foundBlog = blogsAtEnd.find(blog => blog.likes === 13)
+          assert(foundBlog.likes ===13)
+        })
+
+
+    })
+
+
+ 
+
 after(async () => {
   await mongoose.connection.close()
 })
