@@ -22,17 +22,20 @@ mongoose.connect(config.MONGODB_URI)
     logger.error('error connecting to MongoDB:', error.message)
   })
 
-
-app.use(cors())
 app.use(express.json())
+app.use(cors())
+
+app.use('/api/login', loginRouter)
+app.use('/api/users',usersRourter)
+
 app.use(middleware.requestLogger)
 
+
+//app.use(middleware.tokenExtractor)
+//app.use(middleware.tokenValidator)
+
 app.use('/api/blogs', blogsRouter)
-app.use('/api/users',usersRourter)
-app.use('/api/login', loginRouter)
 
-app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
-
-
+app.use(middleware.unknownEndpoint)
 module.exports = app;
