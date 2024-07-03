@@ -6,6 +6,8 @@ const config = require('./utils/config')
 const morgan = require('morgan')
 const logger = require('./utils/logger')
 const blogsRouter = require('./controllers/blogs')
+const usersRourter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 const middleware = require('./utils/middleware')
 const url = config.MONGODB_URI
 
@@ -26,6 +28,8 @@ app.use(express.json())
 app.use(middleware.requestLogger)
 
 app.use('/api/blogs', blogsRouter)
+app.use('/api/users',usersRourter)
+app.use('/api/login', loginRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

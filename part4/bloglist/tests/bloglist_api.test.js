@@ -80,17 +80,14 @@ test('if title or url properties are missing, it must return status 400', async(
 describe('deletion of a blog', () => {
     test('deletion succeeds with status code 204 if id is valid', async () => {
       
-      const blogsAtStart = await Blog.find()
+      const blogsAtStart = await helper.blogsInDb()
       const blogToDelete = blogsAtStart[0]
 
       await api
         .delete(`/api/blogs/${blogToDelete.id}`)
         .expect(204)
 
-      const blogsAtEnd = await Blog.find()
-
-      console.log("BLOGS INICIALES", blogsAtStart.length - 1)
-      console.log("BLOGS FINALES", blogsAtEnd.length)
+      const blogsAtEnd = await helper.blogsInDb()
 
       assert.strictEqual(blogsAtEnd.length, blogsAtStart.length - 1)
 
@@ -115,7 +112,7 @@ describe('deletion of a blog', () => {
            .expect(201)
            .expect('Content-Type', /application\/json/)
           
-          const allBlogs = await Blog.find()
+          const allBlogs = await helper.blogsInDb()
           const blogToUpdate = allBlogs.find(blog => blog.title === newBlog.title)
       
           const updatedBlog = {
@@ -129,7 +126,7 @@ describe('deletion of a blog', () => {
             .expect(200)
             .expect('Content-Type', /application\/json/)
       
-          const blogsAtEnd = await Blog.find()
+          const blogsAtEnd = await helper.blogsInDb()
           assert(blogsAtEnd.length === allBlogs.length)
           const foundBlog = blogsAtEnd.find(blog => blog.likes === 13)
           assert(foundBlog.likes ===13)
