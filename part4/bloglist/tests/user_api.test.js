@@ -1,3 +1,4 @@
+const { test, after, beforeEach,describe } = require('node:test')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const helper = require('./test_helper')
@@ -5,6 +6,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const User = require('../models/user')
+const assert = require('node:assert')
 
 describe('when there is initially one user in db', () => {
   beforeEach(async () => {
@@ -53,6 +55,7 @@ describe('when there is initially one user in db', () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
+    console.log("RESULLLLLLTTT",result.body)
     const usersAtEnd = await helper.usersInDb()
     assert(result.body.error.includes('expected `username` to be unique'))
 

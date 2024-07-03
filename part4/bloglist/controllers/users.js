@@ -10,21 +10,33 @@ usersRouter.get('/', async (request, response) => {
     response.json(users)
   })
 
+
+
 usersRouter.post('/', async (request, response) => {
   const { username, name, password } = request.body
 
-  const saltRounds = 10
-  const passwordHash = await bcrypt.hash(password, saltRounds)
+  const usernameIsUsed = await User.findOne({username : username}).exec()
 
-  const user = new User({
-    username,
-    name,
-    passwordHash,
-  })
+  
+  if(!username || !password){
+    response.status(400).json({ error: 'You need provide username and password' })
+  } else if(usernameIsUsed != null){
+    response.status(400).json({ error: 'This username is already used' })
+  } else {
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(password, saltRounds)
 
-  const savedUser = await user.save()
+    const user = new User({
+        username,
+        name,
+        passwordHash,
+    })
 
-  response.status(201).json(savedUser)
+    const savedUser = await user.save()
+
+    response.status(201).json(savedUser)
+  }
+  
 })
 
 module.exports = usersRouter
