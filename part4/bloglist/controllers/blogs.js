@@ -55,17 +55,13 @@ blogsRouter.post('/',middleware.tokenExtractor,middleware.tokenValidator,middlew
 
 
   blogsRouter.delete('/:id',middleware.tokenExtractor,middleware.tokenValidator,middleware.userExtractor, async (request, response, next) => {
-    const token = request.token
-    const decodedToken = jwt.verify(token, process.env.SECRET)
-
-    const user = await User.findById(decodedToken.id)
-
+    //const token = request.token
+    //const decodedToken = jwt.verify(token, process.env.SECRET)
+    //const user = await User.findById(decodedToken.id)
+    const user = request.user
     const blogToDelete = await Blog.findById(request.params.id)
-    console.log("ID del request:",request.params.id)
-    console.log("token:",token)
-    console.log("user:",user)
-    console.log("blog a borrar",blogToDelete)
-
+    console.log("blog.user.id:",blogToDelete.user._id.toString())
+    console.log("user.id:",user._id.toString())
     if ( blogToDelete.user._id.toString() === user._id.toString() ) {
         try {
             await Blog.findByIdAndDelete(request.params.id)
