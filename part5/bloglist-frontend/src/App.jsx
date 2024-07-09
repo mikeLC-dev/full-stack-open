@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import LoginForm from './components/LoginForm'
+import Togglable from './components/Togglable'
 
 
 
@@ -14,6 +16,8 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [newNotification, setNotification] = useState(null)
+  const blogFormRef = useRef()
+  
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -55,30 +59,6 @@ const App = () => {
     }
   }
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-          <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-          <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>      
-  )
-
   const logout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
@@ -100,6 +80,7 @@ const App = () => {
             setTimeout(() => {
               setNotification(null)
             }, 5000)
+      blogFormRef.current.toggleVisibility()
     } catch(exception){
       console.log("Fail to create the blog")
       setNotification(`ERROR: Fail to create the blog`)
@@ -115,12 +96,15 @@ const App = () => {
       {user === null ?
       <div>
         <h2>login in to application</h2>
-        {loginForm()}
+        <LoginForm handleLogin={handleLogin} handleUsernameChange={({ target }) => setUsername(target.value)} handlePasswordChange={({ target }) => setPassword(target.value)} username={username} password={password} />
       </div> :
       <div>
         <p>{user.name} logged-in</p>
         <button onClick={() => logout()}>logout</button>
-        <BlogForm addBlog={addBlog}/>
+        <Togglable buttonLabel='Create Blog' ref={blogFormRef}>
+          <BlogForm addBlog={addBlog}/>
+        </Togglable>
+        
         <h2>blogs</h2>
         {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
