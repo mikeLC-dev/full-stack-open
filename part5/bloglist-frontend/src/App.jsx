@@ -90,6 +90,24 @@ const App = () => {
     }
   }
 
+  const updateLikes = async (blogToUpdate) =>{
+    try{
+      const updatedBlog = await blogService.update(blogToUpdate.id,blogToUpdate)
+      setBlogs(blogs.map(blog => blog.id !== blogToUpdate.id ? blog : updatedBlog))
+      console.log("blog's likes updated",blogToUpdate.id)
+      setNotification(`Blog ${blogToUpdate.title} by ${blogToUpdate.author} likes +1 `)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
+    } catch(exception){
+      console.log("Fail to update the blog")
+      setNotification(`ERROR: Fail to update the blog`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
+    }
+  }
+
   return (
     <div>
       <Notification message={newNotification}/>
@@ -107,7 +125,7 @@ const App = () => {
         
         <h2>blogs</h2>
         {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} blogService={blogService} updateLikes={updateLikes}/>
         )}
       </div>
     }

@@ -1,7 +1,7 @@
 import BlogInfo from "./BlogInfo"
 import Togglable from "./Togglable"
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, blogService, updateLikes }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -10,12 +10,12 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
-  
+   
   return (
   <div style={blogStyle}>
     {blog.title} {blog.author}
     <Togglable buttonLabel='View'>
-          <BlogInfo url={blog.url} likes={blog.likes} user={blog.user.username}/>
+          <BlogInfo title={blog.title} author={blog.author} url={blog.url} likes={blog.likes} user={blog.user} id={blog.id} blogService={blogService} updateLikes={updateLikes}/>
     </Togglable>
   </div>  
 )
