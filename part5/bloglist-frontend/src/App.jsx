@@ -110,6 +110,24 @@ const App = () => {
     }
   }
 
+  const deleteBlog = async (idToDelete) =>{
+    try{
+      const deletedBlog = await blogService.remove(idToDelete)
+      setBlogs(blogs.filter(blog => blog.id !== idToDelete))
+      console.log("blog with the following id has been deleted",idToDelete)
+      setNotification(`Blog with the following id has been deleted: ${idToDelete}`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
+    } catch(exception){
+      console.log("Fail to delete the blog:",exception)
+      setNotification(`ERROR: Fail to delete the blog`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
+    }
+  }
+
   return (
     <div>
       <Notification message={newNotification}/>
@@ -127,7 +145,7 @@ const App = () => {
         
         <h2>blogs</h2>
         {blogs.sort(orderBlogsByLikes).map(blog =>
-        <Blog key={blog.id} blog={blog} blogService={blogService} updateLikes={updateLikes}/>
+        <Blog key={blog.id} blog={blog} blogService={blogService} updateLikes={updateLikes} deleteBlog={deleteBlog} actualUser={user}/>
         )}
       </div>
     }

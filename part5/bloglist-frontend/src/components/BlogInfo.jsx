@@ -24,12 +24,32 @@ const BlogInfo = (props) => {
         props.updateLikes(blogUpdated)
         setBlogObject(blogUpdated)
     }
-    console.log("ID:",props.id)
+
+    const removeBlog=()=>{
+        if (window.confirm("Do you really want to remove this blog?")) {
+            props.deleteBlog(props.id)
+          }    
+        
+    }
+    
+    const showDeleteButton = () => props.actualUser.username === props.user.username 
+
+    console.log(showDeleteButton())
+    
+    
+
+    
     return (
     <div>
       <p>{props.url}</p>
       <p>{props.likes}<button type="submit" onClick={likeIncrement}>like</button></p>
       <p>{props.user.username}</p>
+      {showDeleteButton() &&
+
+        <button type="submit" onClick={removeBlog}>delete</button>
+      }
+        
+      
     </div>  
   )
   }
