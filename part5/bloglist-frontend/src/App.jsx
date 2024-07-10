@@ -31,6 +31,8 @@ const App = () => {
     }
   }, [])
 
+  const orderBlogsByLikes = (b1, b2) => b2.likes - b1.likes
+
   const handleLogin = async (event) => {
     event.preventDefault()
     
@@ -124,7 +126,7 @@ const App = () => {
         </Togglable>
         
         <h2>blogs</h2>
-        {blogs.map(blog =>
+        {blogs.sort(orderBlogsByLikes).map(blog =>
         <Blog key={blog.id} blog={blog} blogService={blogService} updateLikes={updateLikes}/>
         )}
       </div>
