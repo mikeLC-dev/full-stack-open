@@ -1,5 +1,5 @@
-import BlogInfo from "./BlogInfo"
-import Togglable from "./Togglable"
+import BlogInfo from './BlogInfo'
+import Togglable from './Togglable'
 
 const Blog = ({ blog, blogService, updateLikes, deleteBlog, actualUser }) => {
   const blogStyle = {
@@ -10,15 +10,15 @@ const Blog = ({ blog, blogService, updateLikes, deleteBlog, actualUser }) => {
     marginBottom: 5
   }
 
-  
-   
+
+
   return (
-  <div style={blogStyle}>
-    {blog.title} {blog.author}
-    <Togglable buttonLabel='View'>
-          <BlogInfo title={blog.title} author={blog.author} url={blog.url} likes={blog.likes} user={blog.user} id={blog.id} blogService={blogService} updateLikes={updateLikes} deleteBlog={deleteBlog} actualUser={actualUser}/>
-    </Togglable>
-  </div>  
-)
+    <div style={blogStyle}>
+      {blog.title} {blog.author}
+      <Togglable buttonLabel='View'>
+        <BlogInfo title={blog.title} author={blog.author} url={blog.url} likes={blog.likes} user={blog.user} id={blog.id} blogService={blogService} updateLikes={updateLikes} deleteBlog={deleteBlog} actualUser={actualUser} />
+      </Togglable>
+    </div>
+  )
 }
 export default Blog
