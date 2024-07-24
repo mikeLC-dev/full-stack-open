@@ -38,4 +38,23 @@ describe('Blog app', () => {
       await expect(page.getByText('ERROR: Wrong Credentials')).toBeVisible()
     })
   })
+
+  describe('When logged in', () => {
+    beforeEach(async ({ page }) => {
+      await page.getByTestId('username').fill('mike')
+      await page.getByTestId('password').fill('mikepass')
+      await page.getByRole('button', { name: 'login' }).click()
+    })
+  
+    test('a new blog can be created', async ({ page }) => {
+      await page.getByTestId('createBlogButton').click()
+      await page.getByTestId('title').fill('titulo de prueba')
+      await page.getByTestId('author').fill('mike')
+      await page.getByTestId('url').fill('http://urldeprueba.com')
+      await page.getByTestId('submitBlog').click()
+
+      await expect(page.getByText('A new blog titulo de prueba by mike')).toBeVisible()
+      await expect(page.getByText('titulo de prueba Supermike')).toBeVisible()
+    })
+  })
 })

@@ -40,16 +40,16 @@ const BlogForm = ({ addBlog }) => {
         <h2>Create new</h2>
       </div>
       <div>
-        Title: <input value={newTitle} title='title' onChange={onChangeTitle} />
+        Title: <input value={newTitle} title='title' onChange={onChangeTitle} data-testid='title'/>
       </div>
       <div>
-        Author: <input value={newAuthor} onChange={onChangeAuthor} />
+        Author: <input value={newAuthor} onChange={onChangeAuthor} data-testid='author'/>
       </div>
       <div>
-        URL: <input value={newUrl} onChange={onChangeUrl} />
+        URL: <input value={newUrl} onChange={onChangeUrl} data-testid='url'/>
       </div>
       <div>
-        <button type="submit">create</button>
+        <button type="submit" data-testid="submitBlog">create</button>
       </div>
     </form>)
 
