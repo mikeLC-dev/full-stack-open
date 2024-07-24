@@ -49,4 +49,17 @@ describe('Blog component tests', () => {
     )
   })
 
+  test('you click the like button twice, the event handler is called twice', async () => {
+    const component = render(<Blog key={blog.id} blog={blog} blogService={mockBlogService} updateLikes={mockUpdateLikes} deleteBlog={mockDeleteBlog} actualUser={newUser} />)
+    const button = component.getByText('View')
+    const user = userEvent.setup()
+    const buttonLikes = component.getByText('like')
+    await user.click(button)
+    await user.click(buttonLikes)
+
+    expect(mockUpdateLikes.mock.calls).toHaveLength(1)
+    await user.click(buttonLikes)
+    expect(mockUpdateLikes.mock.calls).toHaveLength(2)
+  })
+
 })
