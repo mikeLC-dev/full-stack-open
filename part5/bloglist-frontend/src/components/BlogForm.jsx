@@ -40,7 +40,7 @@ const BlogForm = ({ addBlog }) => {
         <h2>Create new</h2>
       </div>
       <div>
-        Title: <input value={newTitle} onChange={onChangeTitle} />
+        Title: <input value={newTitle} title='title' onChange={onChangeTitle} />
       </div>
       <div>
         Author: <input value={newAuthor} onChange={onChangeAuthor} />
