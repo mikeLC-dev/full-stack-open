@@ -78,5 +78,29 @@ describe('Blog app', () => {
       await expect(page.getByTestId('likes')).toContainText('1')
       
     })
+
+    test('blog can be remove by his owner', async ({ page }) => {
+      
+
+      //primero creo el blog
+      await page.getByTestId('createBlogButton').click()
+      await page.getByTestId('title').fill('titulo de prueba3')
+      await page.getByTestId('author').fill('mike')
+      await page.getByTestId('url').fill('http://urldeprueba3.com')
+      await page.getByTestId('submitBlog').click()
+
+      //después lo elimino
+      await page.reload()
+      await page.getByRole('button', { name: 'View' }).click()
+      //hago el confirm y elimino
+      page.on('dialog', dialog => dialog.accept());
+      await page.getByTestId('deleteButton').click()
+
+      //compruebo que ya no está el blog después de eliminarlo
+      await expect(page.getByText('titulo de prueba3 Supermike')).toHaveCount(0);
+      
+      
+      
+    })
   })
 })

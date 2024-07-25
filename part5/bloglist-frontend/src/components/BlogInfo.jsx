@@ -47,7 +47,7 @@ const BlogInfo = (props) => {
 
       {showDeleteButton() &&
 
-        <button type="submit" onClick={removeBlog}>delete</button>
+        <button type="submit" onClick={removeBlog} data-testid='deleteButton'>delete</button>
       }
 
 
