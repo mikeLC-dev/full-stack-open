@@ -102,5 +102,42 @@ describe('Blog app', () => {
       
       
     })
+
+    test('delete button can not be watched by other user', async ({ page, request }) => {
+      
+
+      //primero creo el blog
+      await page.getByTestId('createBlogButton').click()
+      await page.getByTestId('title').fill('titulo de prueba3')
+      await page.getByTestId('author').fill('mike')
+      await page.getByTestId('url').fill('http://urldeprueba3.com')
+      await page.getByTestId('submitBlog').click()
+
+      //me deslogueo
+      await page.getByRole('button', { name: 'logout' }).click()
+
+      //creo y me logueo con otro usuario
+      await request.post('http://localhost:5173/api/users', {
+        data: {
+          name: 'Supermike2',
+          username: 'mike2',
+          password: 'mikepass2'
+        }
+      })
+  
+      await page.goto('http://localhost:5173')
+      await page.getByTestId('username').fill('mike2')
+      await page.getByTestId('password').fill('mikepass2')
+      await page.getByRole('button', { name: 'login' }).click()
+      
+      //examino el blog creado por el primer usuario
+      await page.getByRole('button', { name: 'View' }).click()
+      await expect(page.getByText('delete')).toHaveCount(0);
+
+      
+      
+    })
+
+
   })
 })
