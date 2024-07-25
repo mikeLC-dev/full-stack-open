@@ -15,7 +15,7 @@ const Blog = ({ blog, blogService, updateLikes, deleteBlog, actualUser }) => {
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author}
-      <Togglable buttonLabel='View'>
+      <Togglable buttonLabel='View' data-testid="viewButton">
         <BlogInfo title={blog.title} author={blog.author} url={blog.url} likes={blog.likes} user={blog.user} id={blog.id} blogService={blogService} updateLikes={updateLikes} deleteBlog={deleteBlog} actualUser={actualUser} />
       </Togglable>
     </div>

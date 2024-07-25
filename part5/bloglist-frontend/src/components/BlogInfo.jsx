@@ -42,7 +42,7 @@ const BlogInfo = (props) => {
   return (
     <div>
       <p>{props.url}</p>
-      <p>{props.likes}<button type="submit" onClick={likeIncrement}>like</button></p>
+      <p data-testid='likes' >{props.likes}<button type="submit" onClick={likeIncrement} data-testid='likeButton'>like</button></p>
       <p>{props.user.username}</p>
 
       {showDeleteButton() &&

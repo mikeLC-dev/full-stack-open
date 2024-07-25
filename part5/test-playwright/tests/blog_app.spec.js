@@ -56,5 +56,27 @@ describe('Blog app', () => {
       await expect(page.getByText('A new blog titulo de prueba by mike')).toBeVisible()
       await expect(page.getByText('titulo de prueba Supermike')).toBeVisible()
     })
+
+    test('blog can be edited', async ({ page }) => {
+      
+
+      //primero creo el blog
+      await page.getByTestId('createBlogButton').click()
+      await page.getByTestId('title').fill('titulo de prueba2')
+      await page.getByTestId('author').fill('mike')
+      await page.getByTestId('url').fill('http://urldeprueba2.com')
+      await page.getByTestId('submitBlog').click()
+
+      //después aumento su número de likes pulsando el botón like y compruebo que el número de likes aumenta
+
+      await page.getByRole('button', { name: 'View' }).click()
+      await expect(page.getByTestId('likes')).toBeVisible()
+      await expect(page.getByTestId('likes')).toContainText('0')
+
+      await page.getByTestId('likeButton').click()
+      await expect(page.getByTestId('likes')).toBeVisible()
+      await expect(page.getByTestId('likes')).toContainText('1')
+      
+    })
   })
 })
