@@ -1,6 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { voteForAnAnecdote, addAnecdote } from './reducers/anecdoteReducer'
 import reducer from './reducers/anecdoteReducer'
+import AnecdoteList from './components/AnecdoteList'
+import AnecdoteForm from './components/AnecdoteForm'
 
 const App = () => {
   const anecdotes = useSelector(state => state)
@@ -22,22 +24,10 @@ const App = () => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
-        <div key={anecdote.id}>
-          <div>
-            {anecdote.content}
-          </div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
-          </div>
-        </div>
-      )}
+      <AnecdoteList anecdotes={anecdotes} vote={vote}/>
+      
       <h2>create new</h2>
-      <form onSubmit={addNewAnecdote}>
-        <div><input name="anecdote"/></div>
-        <button type="submit">create</button>
-      </form>
+      <AnecdoteForm addNewAnecdote={addNewAnecdote}/>
     </div>
   )
 }
