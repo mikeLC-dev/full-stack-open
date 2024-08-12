@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable no-empty */
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -20,7 +21,7 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
+const anecdotesReducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
   
@@ -57,8 +58,4 @@ export const addAnecdote = (content) =>{
     }
   }
 }
-
-
-
-
-export default reducer
+export default anecdotesReducer
