@@ -22,8 +22,7 @@ const AnecdoteList = () => {
 
   const vote = async (id) => {
     dispatch(voteAnecdote(id))
-    dispatch(setNotification(`You voted the anecdote with id'${id}'`))
-    setTimeout(() => dispatch(setNotification(null)), 5 * 1000);
+    dispatch(setNotification(`You voted the anecdote with id'${id}'`, 5))
   }
 
   const orderedAnecdotes = [...anecdotes].sort((a,b)=> b.votes-a.votes)
